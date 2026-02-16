@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ET官网 - IP状态</title>
+    <meta http-equiv="refresh" content="30"> <!-- 每30秒自动刷新 -->
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        #ip-box { 
+            background: #f5f5f5; 
+            padding: 20px; 
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #4CAF50;
+        }
+        #ip-value { 
+            font-size: 24px; 
+            color: #2196F3;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>ET官网 - IP状态监控</h1>
+    <p>官网版本：bata0.1</p>
+    <hr>
+    
+    <h2>📱 设备上报的IP地址</h2>
+    
+    <div id="ip-box">
+        <p id="ip-display">正在加载IP信息...</p>
+        <p id="ip-value">-</p>
+        <p id="update-time">-</p>
+    </div>
+    
+    <button onclick="refreshIP()">🔄 刷新显示</button>
+    <button onclick="clearStorage()">🗑️ 清除数据</button>
+    
+    <hr>
+    <p><small>IP信息由设备自动上报，每10分钟更新一次。</small></p>
+    
+    <script>
+        // 显示IP信息
+        function displayIP() {
+            const ip = localStorage.getItem('ettd_ip');
+            const label = localStorage.getItem('ettd_label') || '服务器当前IP为：';
+            const time = localStorage.getItem('ettd_time');
+            
+            if (ip) {
+                document.getElementById('ip-display').textContent = label;
+                document.getElementById('ip-value').textContent = ip;
+                document.getElementById('update-time').textContent = `更新时间：${time}`;
+                console.log('显示的IP:', ip);
+            } else {
+                document.getElementById('ip-value').textContent = '等待设备上报IP...';
+            }
+        }
+        
+        // 刷新显示
+        function refreshIP() {
+            displayIP();
+            alert('已刷新！');
+        }
+        
+        // 清除存储
+        function clearStorage() {
+            localStorage.clear();
+            location.reload();
+        }
+        
+        // 页面加载时显示IP
+        window.onload = displayIP;
+        
+        // 检查是否有URL参数（直接访问ipet114514.html时会跳转）
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('ip')) {
+            // 如果有IP参数，说明是直接访问，跳转到处理页面
+            window.location.href = 'ipet114514.html' + window.location.search;
+        }
+    </script>
+</body>
+</html>
