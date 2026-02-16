@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+        // 接收IP参数并保存
+        function saveIP() {
+            // 获取URL参数
+            const urlParams = new URLSearchParams(window.location.search);
+            const ip = urlParams.get('ip');
+            const label = urlParams.get('label') || '服务器当前IP为：';
+            
+            console.log('接收到的IP参数:', ip);
+            console.log('接收到的label参数:', label);
+            
+            if (ip && ip !== '0.0.0.0') {
+                // 保存到localStorage
+                localStorage.setItem('ettd_ip', ip);
+                localStorage.setItem('ettd_label', label);
+                localStorage.setItem('ettd_time', new Date().toLocaleString());
+                
+                console.log('IP已保存:', ip);
+                
+                // 显示成功信息
+                document.body.innerHTML = `
+                    <h3>IP接收成功！</h3>
+                    <p>IP: ${ip}</p>
+                    <p>3秒后自动返回首页...</p>
+                `;
+            } else {
+                document.body.innerHTML = '<h3>错误：未收到有效IP</h3>';
+            }
+            
+            // 3秒后跳转回首页
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+        
+        // 页面加载后立即执行
+        window.onload = saveIP;
+    </script>
+</head>
+<body>
+    <p>正在处理IP数据...</p>
+</body>
+</html>
