@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP状态显示</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; text-align: center; }
+        #ipDisplay { font-size: 1.5em; margin: 20px; padding: 15px; background-color: #f0f0f0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>获取最新服务器IP</h1>
+    <p>服务器IP</p>
+    <hr>
+    <h2>设备上报的IP地址</h2>
+    <div id="ipDisplay">
+        <!-- IP信息将动态显示在这里 -->
+    </div>
+    <p id="updateTime"></p>
+    <p><small>ip</small></p>
+
+    <script>
+        // 页面加载时，从LocalStorage读取并显示IP
+        function displayStoredIP() {
+            const ipDisplay = document.getElementById('ipDisplay');
+            const timeDisplay = document.getElementById('updateTime');
+
+            // 从LocalStorage读取数据
+            const storedIP = localStorage.getItem('serverIP');
+            const storedLabel = localStorage.getItem('ipLabel') || '服务器当前IP为：';
+            const storedTime = localStorage.getItem('lastUpdate');
+
+            if (storedIP) {
+                // 显示IP和标签
+                ipDisplay.innerHTML = `<strong>${storedLabel}</strong> <code>${storedIP}</code>`;
+                if (storedTime) {
+                    timeDisplay.textContent = `最后上报时间：${storedTime}`;
+                }
+            } else {
+                // 如果没有存储的数据，显示等待信息
+                ipDisplay.textContent = '等待设备首次上报IP...';
+                timeDisplay.textContent = '';
+            }
+        }
+
+        // 页面加载完成后运行
+        window.addEventListener('DOMContentLoaded', displayStoredIP);
+    </script>
+</body>
+</html>
